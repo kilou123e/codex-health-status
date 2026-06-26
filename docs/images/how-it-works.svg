@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Codex 健康值工作原理</title>
+  <desc id="desc">展示菜单栏应用、本地 Node 服务、Codex app-server 和本机状态数据库之间的关系。</desc>
+  <defs>
+    <style>
+      .bg{fill:#101614}
+      .title{font:800 48px ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#f3f5e8}
+      .sub{font:500 22px ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#aab8ad}
+      .box-title{font:800 25px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#f4f4e6}
+      .box-text{font:650 18px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#b8c4b8}
+      .note{font:750 20px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#111614}
+      .box{fill:#18201f;stroke:#6bcfbd;stroke-width:3}
+      .box2{fill:#202827;stroke:#d5bd64;stroke-width:3}
+      .line{stroke:#8a9690;stroke-width:5;stroke-linecap:round}
+    </style>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#8a9690"/>
+    </marker>
+  </defs>
+  <rect class="bg" width="1200" height="630"/>
+  <text x="72" y="86" class="title">只在本机运行的用量面板</text>
+  <text x="74" y="124" class="sub">没有云端中转，不上传你的用量数据或 Codex 状态</text>
+
+  <g transform="translate(70 205)">
+    <rect class="box" width="230" height="145" rx="26"/>
+    <text x="28" y="48" class="box-title">macOS 菜单栏</text>
+    <text x="28" y="84" class="box-text">像素猫 + 百分比</text>
+    <text x="28" y="115" class="box-text">详情卡片 / 提醒</text>
+  </g>
+  <line class="line" x1="320" y1="277" x2="430" y2="277" marker-end="url(#arrow)"/>
+  <g transform="translate(450 205)">
+    <rect class="box2" width="270" height="145" rx="26"/>
+    <text x="28" y="48" class="box-title">本地 Node 服务</text>
+    <text x="28" y="84" class="box-text">127.0.0.1:3333</text>
+    <text x="28" y="115" class="box-text">网页 + API + SSE</text>
+  </g>
+  <line class="line" x1="740" y1="277" x2="850" y2="277" marker-end="url(#arrow)"/>
+  <g transform="translate(870 205)">
+    <rect class="box" width="260" height="145" rx="26"/>
+    <text x="28" y="48" class="box-title">Codex app-server</text>
+    <text x="28" y="84" class="box-text">读取 rate limits</text>
+    <text x="28" y="115" class="box-text">监听任务状态事件</text>
+  </g>
+
+  <g transform="translate(270 425)">
+    <rect width="660" height="78" rx="24" fill="#e9ecd8"/>
+    <text x="34" y="48" class="note">任务动画来自事件监听 + 本机 Codex sqlite 活动轮询</text>
+  </g>
+  <path d="M585 350 C585 390 585 392 585 425" fill="none" class="line" marker-end="url(#arrow)"/>
+
+  <g transform="translate(70 548)">
+    <rect width="1060" height="38" rx="19" fill="#202827"/>
+    <text x="26" y="26" class="box-text">安全边界：所有请求绑定到 127.0.0.1，使用者只读取自己电脑上的 Codex 状态</text>
+  </g>
+</svg>
