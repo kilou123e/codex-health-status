@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Codex 健康值功能总览</title>
+  <desc id="desc">介绍 Codex 健康值菜单栏应用的核心功能。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#111918"/>
+      <stop offset="1" stop-color="#202928"/>
+    </linearGradient>
+    <linearGradient id="hp" x1="0" x2="1">
+      <stop offset="0" stop-color="#57d68d"/>
+      <stop offset="1" stop-color="#d8b958"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".35"/>
+    </filter>
+    <style>
+      .title{font:800 54px ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#f5f6e8}
+      .sub{font:500 24px ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#b8c4b8}
+      .label{font:800 26px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#f4f4e6}
+      .small{font:700 18px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#c4cbc0}
+      .tiny{font:600 15px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#8f9b93}
+      .chip{font:800 18px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#111918}
+      .card{fill:#151c1b;stroke:#e7ead4;stroke-width:4}
+      .panel{fill:#222b2a;stroke-width:3}
+    </style>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1040" cy="90" r="170" fill="#5bd6c2" opacity=".08"/>
+  <circle cx="160" cy="560" r="220" fill="#d85d54" opacity=".06"/>
+
+  <text x="70" y="88" class="title">Codex 健康值</text>
+  <text x="72" y="128" class="sub">把 Codex 用量变成一只菜单栏里的像素健康宠物</text>
+
+  <g transform="translate(70 175)" filter="url(#shadow)">
+    <rect class="card" width="520" height="360" rx="30"/>
+    <rect x="30" y="34" width="460" height="12" rx="6" fill="url(#hp)"/>
+    <text x="38" y="94" class="label">用量状态</text>
+    <g transform="translate(38 125)">
+      <rect class="panel" width="444" height="92" rx="28" stroke="#91c56d"/>
+      <text x="22" y="36" class="label">5 小时</text>
+      <text x="310" y="36" class="label" fill="#91c56d">剩余 63%</text>
+      <text x="22" y="70" class="small">♡♡♡♡♡♡♡♡♡♡</text>
+      <rect x="22" y="78" width="400" height="12" rx="6" fill="#3b4443"/>
+      <rect x="22" y="78" width="252" height="12" rx="6" fill="#91c56d"/>
+    </g>
+    <g transform="translate(38 235)">
+      <rect class="panel" width="444" height="92" rx="28" stroke="#c0a85b"/>
+      <text x="22" y="36" class="label">1 周</text>
+      <text x="310" y="36" class="label" fill="#c0a85b">剩余 45%</text>
+      <text x="22" y="70" class="small">▱▱▱▱▱▱▱▱▱▱</text>
+      <rect x="22" y="78" width="400" height="12" rx="6" fill="#3b4443"/>
+      <rect x="22" y="78" width="180" height="12" rx="6" fill="#c0a85b"/>
+    </g>
+  </g>
+
+  <g transform="translate(650 186)">
+    <rect x="0" y="0" width="210" height="86" rx="22" fill="#f3f5e8"/>
+    <text x="28" y="54" class="chip">🐱 63%</text>
+    <text x="250" y="30" class="label">菜单栏常驻</text>
+    <text x="250" y="64" class="small">不打开 Codex 也能看剩余额度</text>
+  </g>
+  <g transform="translate(650 310)">
+    <rect x="0" y="0" width="210" height="86" rx="22" fill="#4dc4b2"/>
+    <text x="34" y="54" class="chip">刷新 / 详情</text>
+    <text x="250" y="30" class="label">游戏卡片详情</text>
+    <text x="250" y="64" class="small">心形展示 5 小时，盾牌展示 1 周</text>
+  </g>
+  <g transform="translate(650 434)">
+    <rect x="0" y="0" width="210" height="86" rx="22" fill="#df665b"/>
+    <text x="35" y="54" class="chip">任务完成提醒</text>
+    <text x="250" y="30" class="label">运行中动画</text>
+    <text x="250" y="64" class="small">Codex 忙碌时像素猫进入彩虹状态</text>
+  </g>
+</svg>
