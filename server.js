@@ -1,9 +1,10 @@
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
-import { extname, join } from "node:path";
+import { dirname, extname, join, normalize } from "node:path";
 import { execFile, spawn } from "node:child_process";
 import { homedir } from "node:os";
 import { URL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 const HOST = "127.0.0.1";
 const UI_PORT = Number(process.env.PORT || 3333);
@@ -16,7 +17,7 @@ const CODEX_HOME = process.env.CODEX_HOME || join(process.env.HOME || homedir(),
 const STATE_DB = process.env.CODEX_STATE_DB || join(CODEX_HOME, "state_5.sqlite");
 const SQLITE_BIN = process.env.SQLITE_BIN || "/usr/bin/sqlite3";
 
-const root = new URL(".", import.meta.url).pathname;
+const root = dirname(fileURLToPath(import.meta.url));
 const publicDir = join(root, "public");
 
 let codexProcess = null;
@@ -370,9 +371,9 @@ const server = createServer(async (req, res) => {
     return;
   }
 
-  const pathname = url.pathname === "/" ? "/index.html" : url.pathname;
-  const filePath = join(publicDir, pathname);
-  if (!filePath.startsWith(publicDir)) {
+  const pathname = url.pathname === "/" ? "index.html" : decodeURIComponent(url.pathname.slice(1));
+  const filePath = normalize(join(publicDir, pathname));
+  if (!filePath.startsWith(publicDir + "/") && filePath !== publicDir) {
     res.writeHead(403);
     res.end("Forbidden");
     return;
