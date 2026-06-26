@@ -321,6 +321,7 @@
       }
 
       function render(snapshot) {
+        if (!snapshot) return;
         const bucket = chooseCodexBucket(snapshot.data);
         const primary = bucket?.primary;
         const secondary = bucket?.secondary;
@@ -332,7 +333,7 @@
 
         els.dot.className = `dot ${status}`;
         els.statusText.textContent = status === "connected" ? "已连接" : status === "error" ? "需要处理" : "启动中...";
-        els.windowName.textContent = bucket?.limitId ? `Codex ${durationLabel(primary?.windowDurationMins)}` : "等待数据";
+        els.windowName.textContent = primary ? `Codex ${durationLabel(primary?.windowDurationMins)}` : "等待数据";
         els.plan.textContent = bucket?.planType ?? "-";
         els.used.textContent = Number.isFinite(remaining) ? `剩余 ${percent(remaining)}（已用 ${percent(used)}）` : "-";
         els.fill.style.width = `${Math.max(0, Math.min(100, remaining || 0))}%`;
@@ -349,11 +350,31 @@
       }
 
       async function refresh() {
-        const response = await fetch("/api/refresh", { method: "POST" });
-        render(await response.json());
+        try {
+          const response = await fetch("/api/refresh", { method: "POST" });
+          render(await response.json());
+        } catch (error) {
+          els.dot.className = "dot error";
+          els.statusText.textContent = "本地状态服务已断开";
+          els.errorBox.style.display = "block";
+          els.errorBox.textContent = error.message;
+        }
+      }
+
+      async function loadInitialStatus() {
+        try {
+          const response = await fetch("/api/status");
+          render(await response.json());
+        } catch (error) {
+          els.dot.className = "dot error";
+          els.statusText.textContent = "本地状态服务已断开";
+          els.errorBox.style.display = "block";
+          els.errorBox.textContent = error.message;
+        }
       }
 
       els.refresh.addEventListener("click", refresh);
+      loadInitialStatus();
       const events = new EventSource("/api/events");
       events.onmessage = (event) => render(JSON.parse(event.data));
       events.onerror = () => {
