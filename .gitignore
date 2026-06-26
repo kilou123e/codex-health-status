@@ -1,0 +1,12 @@
+.DS_Store
+node_modules/
+npm-debug.log*
+
+# macOS build output
+macos/build/
+dist/
+*.zip
+
+# Local editor files
+.idea/
+.vscode/
