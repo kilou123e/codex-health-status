@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Codex 健康值安装流程</title>
+  <desc id="desc">展示从克隆仓库到构建并启动菜单栏应用的步骤。</desc>
+  <defs>
+    <style>
+      .title{font:800 48px ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#16201d}
+      .sub{font:500 22px ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#55635e}
+      .step{font:900 30px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#fff}
+      .head{font:800 25px ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#16201d}
+      .body{font:650 19px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#4e5d58}
+      .code{font:750 17px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#eef5e8}
+      .card{fill:#fffdf3;stroke:#d6dccf;stroke-width:3}
+    </style>
+  </defs>
+  <rect width="1200" height="630" fill="#f4f7ed"/>
+  <text x="72" y="86" class="title">从 GitHub 到菜单栏，只要三步</text>
+  <text x="74" y="124" class="sub">适用于 macOS：Node.js 22+、Codex、Xcode Command Line Tools</text>
+
+  <g transform="translate(70 190)">
+    <rect class="card" width="320" height="310" rx="28"/>
+    <circle cx="54" cy="58" r="30" fill="#4dc4b2"/>
+    <text x="43" y="69" class="step">1</text>
+    <text x="98" y="66" class="head">克隆仓库</text>
+    <rect x="34" y="112" width="252" height="92" rx="16" fill="#17201e"/>
+    <text x="54" y="148" class="code">git clone ...</text>
+    <text x="54" y="180" class="code">cd codex-health-status</text>
+    <text x="34" y="246" class="body">获取源码、图标和构建脚本。</text>
+  </g>
+
+  <g transform="translate(440 190)">
+    <rect class="card" width="320" height="310" rx="28"/>
+    <circle cx="54" cy="58" r="30" fill="#d5b95f"/>
+    <text x="43" y="69" class="step">2</text>
+    <text x="98" y="66" class="head">构建 App</text>
+    <rect x="34" y="112" width="252" height="92" rx="16" fill="#17201e"/>
+    <text x="54" y="148" class="code">npm run build:macos</text>
+    <text x="54" y="180" class="code">open macos/build/...</text>
+    <text x="34" y="246" class="body">生成原生 macOS 菜单栏应用。</text>
+  </g>
+
+  <g transform="translate(810 190)">
+    <rect class="card" width="320" height="310" rx="28"/>
+    <circle cx="54" cy="58" r="30" fill="#df665b"/>
+    <text x="43" y="69" class="step">3</text>
+    <text x="98" y="66" class="head">开始查看</text>
+    <rect x="34" y="112" width="252" height="92" rx="16" fill="#17201e"/>
+    <text x="54" y="148" class="code">菜单栏：🐱 63%</text>
+    <text x="54" y="180" class="code">详情：127.0.0.1</text>
+    <text x="34" y="246" class="body">点击图标查看卡片和网页详情。</text>
+  </g>
+
+  <rect x="235" y="532" width="730" height="52" rx="26" fill="#17201e"/>
+  <text x="270" y="566" class="code">提示：App 只读取本机 Codex 状态，不需要外部服务器。</text>
+</svg>
