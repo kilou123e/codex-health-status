@@ -2,6 +2,12 @@
 
 一个 macOS 菜单栏小工具，用像素猫展示 Codex 的剩余用量。点击菜单栏图标可以看到 5 小时和 1 周用量窗口、重置时间、套餐和重置券信息。
 
+![Codex 健康值功能总览](docs/images/overview.svg)
+
+## 工作原理
+
+![Codex 健康值工作原理](docs/images/how-it-works.svg)
+
 ## 功能
 
 - 菜单栏实时显示 Codex 剩余用量百分比
@@ -10,6 +16,10 @@
 - Codex 有任务运行时，小猫会进入彩虹动画状态
 - 任务结束时发出系统提醒
 - 本地 Node 状态服务，数据只在本机读取
+
+## 安装流程
+
+![Codex 健康值安装流程](docs/images/install-flow.svg)
 
 ## 环境要求
 
