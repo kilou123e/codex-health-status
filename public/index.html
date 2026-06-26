@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Codex 用量状态</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f6f7f2;
+        --panel: #ffffff;
+        --ink: #1e2426;
+        --muted: #64706f;
+        --line: #dfe4dc;
+        --accent: #0c7a6d;
+        --warn: #b06b00;
+        --danger: #b42318;
+        --ok: #0f7a4f;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #101412;
+          --panel: #171d1a;
+          --ink: #edf2ed;
+          --muted: #9aa79f;
+          --line: #2b332e;
+          --accent: #5ad0bf;
+          --warn: #f0b85a;
+          --danger: #ff867d;
+          --ok: #73d79d;
+        }
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: min(880px, calc(100vw - 32px));
+        margin: 32px auto;
+      }
+
+      header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1.1;
+        letter-spacing: 0;
+      }
+
+      button {
+        min-height: 38px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0 14px;
+        background: var(--panel);
+        color: var(--ink);
+        cursor: pointer;
+        font: inherit;
+      }
+
+      button:hover {
+        border-color: var(--accent);
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+      }
+
+      .topline {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--warn);
+      }
+
+      .dot.connected {
+        background: var(--ok);
+      }
+
+      .dot.error {
+        background: var(--danger);
+      }
+
+      .usage {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px 16px;
+        align-items: center;
+        margin-top: 22px;
+      }
+
+      .label {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .value {
+        text-align: right;
+        font-weight: 700;
+        font-size: 18px;
+      }
+
+      .bar {
+        grid-column: 1 / -1;
+        height: 14px;
+        border-radius: 999px;
+        overflow: hidden;
+        background: color-mix(in srgb, var(--line), transparent 20%);
+      }
+
+      .fill {
+        width: 0%;
+        height: 100%;
+        background: var(--accent);
+        transition: width 220ms ease, background 220ms ease;
+      }
+
+      .fill.warn {
+        background: var(--warn);
+      }
+
+      .fill.danger {
+        background: var(--danger);
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .metric {
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
+      }
+
+      .metric div:first-child {
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 4px;
+      }
+
+      .metric div:last-child {
+        font-size: 16px;
+        font-weight: 650;
+        overflow-wrap: anywhere;
+      }
+
+      .error-box {
+        display: none;
+        margin-top: 16px;
+        color: var(--danger);
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
+        font-size: 14px;
+      }
+
+      pre {
+        display: none;
+        margin: 18px 0 0;
+        padding: 14px;
+        max-height: 280px;
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--muted);
+        background: color-mix(in srgb, var(--panel), #000 4%);
+      }
+
+      footer {
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      @media (max-width: 620px) {
+        main {
+          width: min(100vw - 24px, 880px);
+          margin-top: 18px;
+        }
+
+        header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        h1 {
+          font-size: 23px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <h1>Codex 用量状态</h1>
+          <div class="status"><span id="dot" class="dot"></span><span id="statusText">启动中...</span></div>
+        </div>
+        <button id="refresh" type="button">刷新</button>
+      </header>
+
+      <section class="panel">
+        <div class="topline">
+          <div>
+            <div class="label">剩余额度窗口</div>
+            <div id="windowName" class="value" style="text-align: left;">等待数据</div>
+          </div>
+          <div>
+            <div class="label">套餐</div>
+            <div id="plan" class="value">-</div>
+          </div>
+        </div>
+
+        <div class="usage">
+          <div class="label">剩余</div>
+          <div id="used" class="value">-</div>
+          <div class="bar" aria-hidden="true"><div id="fill" class="fill"></div></div>
+        </div>
+
+        <div class="grid">
+          <div class="metric"><div>5 小时重置</div><div id="primaryReset">-</div></div>
+          <div class="metric"><div>1 周剩余</div><div id="secondaryUsage">-</div></div>
+          <div class="metric"><div>1 周重置</div><div id="secondaryReset">-</div></div>
+          <div class="metric"><div>重置券</div><div id="resetCredits">-</div></div>
+          <div class="metric"><div>余额</div><div id="credits">-</div></div>
+          <div class="metric"><div>更新时间</div><div id="updated">-</div></div>
+        </div>
+
+        <div id="errorBox" class="error-box"></div>
+        <pre id="raw"></pre>
+      </section>
+
+      <footer>仅本机使用：页面连接本地 Node 代理，代理再读取 Codex app-server。</footer>
+    </main>
+
+    <script>
+      const els = {
+        dot: document.querySelector("#dot"),
+        statusText: document.querySelector("#statusText"),
+        windowName: document.querySelector("#windowName"),
+        plan: document.querySelector("#plan"),
+        used: document.querySelector("#used"),
+        fill: document.querySelector("#fill"),
+        primaryReset: document.querySelector("#primaryReset"),
+        secondaryUsage: document.querySelector("#secondaryUsage"),
+        secondaryReset: document.querySelector("#secondaryReset"),
+        resetCredits: document.querySelector("#resetCredits"),
+        credits: document.querySelector("#credits"),
+        updated: document.querySelector("#updated"),
+        errorBox: document.querySelector("#errorBox"),
+        raw: document.querySelector("#raw"),
+        refresh: document.querySelector("#refresh"),
+      };
+
+      function formatTime(epochSeconds) {
+        if (!epochSeconds) return "-";
+        return new Date(epochSeconds * 1000).toLocaleString(undefined, {
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+
+      function durationLabel(mins) {
+        if (!mins) return "当前窗口";
+        if (mins < 60) return `${mins} 分钟`;
+        if (mins < 1440) return `${Math.round(mins / 60)} 小时`;
+        return `${Math.round(mins / 1440)} 天`;
+      }
+
+      function percent(value) {
+        return Number.isFinite(value) ? `${Math.round(value)}%` : "-";
+      }
+
+      function chooseCodexBucket(data) {
+        const buckets = data?.rateLimitsByLimitId;
+        return buckets?.codex ?? data?.rateLimits ?? null;
+      }
+
+      function render(snapshot) {
+        const bucket = chooseCodexBucket(snapshot.data);
+        const primary = bucket?.primary;
+        const secondary = bucket?.secondary;
+        const used = primary?.usedPercent;
+        const remaining = Number.isFinite(used) ? 100 - used : undefined;
+        const secondaryUsed = secondary?.usedPercent;
+        const secondaryRemaining = Number.isFinite(secondaryUsed) ? 100 - secondaryUsed : undefined;
+        const status = snapshot.status || "starting";
+
+        els.dot.className = `dot ${status}`;
+        els.statusText.textContent = status === "connected" ? "已连接" : status === "error" ? "需要处理" : "启动中...";
+        els.windowName.textContent = bucket?.limitId ? `Codex ${durationLabel(primary?.windowDurationMins)}` : "等待数据";
+        els.plan.textContent = bucket?.planType ?? "-";
+        els.used.textContent = Number.isFinite(remaining) ? `剩余 ${percent(remaining)}（已用 ${percent(used)}）` : "-";
+        els.fill.style.width = `${Math.max(0, Math.min(100, remaining || 0))}%`;
+        els.fill.className = `fill ${remaining <= 10 ? "danger" : remaining <= 30 ? "warn" : ""}`;
+        els.primaryReset.textContent = formatTime(primary?.resetsAt);
+        els.secondaryUsage.textContent = Number.isFinite(secondaryRemaining) ? `剩余 ${percent(secondaryRemaining)}（已用 ${percent(secondaryUsed)}）` : "-";
+        els.secondaryReset.textContent = formatTime(secondary?.resetsAt);
+        els.resetCredits.textContent = snapshot.data?.rateLimitResetCredits?.availableCount ?? "-";
+        els.credits.textContent = bucket?.credits?.unlimited ? "Unlimited" : bucket?.credits?.balance ?? "-";
+        els.updated.textContent = snapshot.updatedAt ? new Date(snapshot.updatedAt).toLocaleTimeString() : "-";
+        els.errorBox.style.display = snapshot.error ? "block" : "none";
+        els.errorBox.textContent = snapshot.error || "";
+        els.raw.textContent = JSON.stringify(snapshot, null, 2);
+      }
+
+      async function refresh() {
+        const response = await fetch("/api/refresh", { method: "POST" });
+        render(await response.json());
+      }
+
+      els.refresh.addEventListener("click", refresh);
+      const events = new EventSource("/api/events");
+      events.onmessage = (event) => render(JSON.parse(event.data));
+      events.onerror = () => {
+        els.dot.className = "dot error";
+        els.statusText.textContent = "本地状态服务已断开";
+      };
+    </script>
+  </body>
+</html>
